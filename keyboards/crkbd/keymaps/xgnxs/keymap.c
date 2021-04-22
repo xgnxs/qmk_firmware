@@ -26,6 +26,10 @@ enum layer_names {
   _ADJUST
 };
 
+enum custom_keycodes {
+  CPY_REL = SAFE_RANGE,
+};
+
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define SCL_NAV LT(_NAV, KC_SCLN)
@@ -37,6 +41,9 @@ enum layer_names {
 #define CTL_TAB C(KC_TAB)
 #define CSF_TAB C(S(KC_TAB))
 #define TSK_MGR C(S(KC_ESC))
+
+#define CTL_GRV C(KC_GRV)
+#define CTL_ONE C(KC_1)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
@@ -78,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_F5,  KC_F10,  KC_F11, _______, _______, _______,
+      _______, _______, _______, CTL_ONE, CPY_REL, CTL_GRV,                        KC_F5,  KC_F10,  KC_F11, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, _______, _______, CSF_TAB,  KC_F12, CTL_TAB,                      KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -206,8 +213,21 @@ void oled_task_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    set_keylog(keycode, record);
+  switch (keycode) {
+    case CPY_REL:
+      if(!record -> event.pressed) {
+        tap_code16(C(KC_K));
+        tap_code16(C(S(KC_C)));
+      }
+      return false;
+      break;
+
+    default:
+      if (record -> event.pressed) {
+        set_keylog(keycode, record);
+      }
+      return true;
+      break;
   }
   return true;
 }
