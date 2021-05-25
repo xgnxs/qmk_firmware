@@ -23,7 +23,8 @@ enum layer_names {
   _LOWER,
   _RAISE,
   _NAV,
-  _SPECIAL,
+  _FKEYS,
+  _ADJUST,
 };
 
 enum custom_keycodes {
@@ -33,6 +34,7 @@ enum custom_keycodes {
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define SCL_NAV LT(_NAV, KC_SCLN)
+#define FKEYS MO(_FKEYS)
 
 #define CTL_ESC LCTL_T(KC_ESC)
 #define CTL_QOT RCTL_T(KC_QUOT)
@@ -92,24 +94,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, TSK_MGR, _______, KC_MYCM, _______, _______,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, KC_BSPC,    KC_BSPC, _______, _______
+                                          _______, _______, KC_BSPC,    KC_BSPC,   FKEYS, _______
                                       //`--------------------------'  `--------------------------'
   ),
-  [_SPECIAL] = LAYOUT_split_3x6_3(
+
+  [_FKEYS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                      XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, XXXXXXX,   RESET,
+      XXXXXXX,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,                      XXXXXXX, KC_MS_L, KC_MS_U, KC_MS_R, XXXXXXX, XXXXXXX,
+      CTL_ESC,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,                      XXXXXXX, KC_LALT, KC_LSFT, XXXXXXX, _______, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,  KC_F12,                      XXXXXXX, XXXXXXX, KC_MS_D, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,  KC_F12,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______, _______, _______,    _______, _______, _______
+                                          XXXXXXX, XXXXXXX, KC_BSPC,    KC_BSPC, _______, XXXXXXX
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+  [_ADJUST] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, XXXXXXX,   RESET,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      CTL_ESC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_MS_L, KC_MS_U, KC_MS_R, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MS_D, XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          XXXXXXX, _______, XXXXXXX,    XXXXXXX, _______, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   )
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _SPECIAL);
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
 bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) {
@@ -144,8 +159,11 @@ void oled_render_layer_state(void) {
         case _NAV:
             oled_write_ln_P(PSTR("Nav"), false);
             break;
-        case _SPECIAL:
-            oled_write_ln_P(PSTR("Special"), false);
+        case _FKEYS:
+            oled_write_ln_P(PSTR("F-Keys"), false);
+            break;
+        case _ADJUST:
+            oled_write_ln_P(PSTR("Adjust"), false);
             break;
         default:
             oled_write_ln_P(PSTR("Oh no..."), false);
