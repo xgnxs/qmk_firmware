@@ -41,6 +41,9 @@ enum custom_keycodes {
 #define SFT_ENT RSFT_T(KC_ENT)
 #define SFT_SPC LSFT_T(KC_SPC)
 
+#define ALT_TAB LALT_T(KC_TAB)
+#define WIN_DEL LGUI_T(KC_DEL)
+
 #define CTL_TAB C(KC_TAB)
 #define CSF_TAB C(S(KC_TAB))
 #define TSK_MGR C(S(KC_ESC))
@@ -51,7 +54,7 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_DEL,
+      ALT_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, WIN_DEL,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       CTL_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, SCL_NAV, CTL_QOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -106,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,  KC_F12,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, XXXXXXX, KC_BSPC,    KC_BSPC, _______, XXXXXXX
+                                          KC_LGUI, XXXXXXX, KC_BSPC,    KC_BSPC, _______, XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 
