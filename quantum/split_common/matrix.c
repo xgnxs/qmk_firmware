@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config.h"
 #include "transport.h"
 
-#define ERROR_DISCONNECT_COUNT 5
+#define ERROR_DISCONNECT_COUNT 10 
 
 #define ROWS_PER_HAND (MATRIX_ROWS / 2)
 
